@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:noteapp_flutter/presentation/note_list/note_list_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -16,13 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            "Hello NoteApp"
-          ),
-       ),
-      ),
-    ); 
+      home: const NoteListScreen(),
+    );
   }
 }
