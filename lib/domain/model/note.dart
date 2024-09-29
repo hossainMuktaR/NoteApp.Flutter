@@ -32,4 +32,8 @@ class Note {
       id: id,
     );
   }
+  @override
+  String toString() {
+    return title;
+  }
 }

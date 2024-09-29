@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noteapp_flutter/presentation/add_edit_note/add_edit_note_screen.dart';
 import 'package:noteapp_flutter/presentation/note_list/note_list_viewmodel.dart';
 import 'package:noteapp_flutter/presentation/note_list/widget/note_card.dart';
+import 'package:noteapp_flutter/presentation/note_list/widget/order_section.dart';
 import 'package:provider/provider.dart';
 
 class NoteListScreen extends StatelessWidget {
@@ -9,36 +10,63 @@ class NoteListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('NoteApp'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.sort))],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // implement navigation to add edit note screen
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddEditNoteScreen()));
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: ChangeNotifierProvider(
-        create: (context) => NoteListViewModel(),
-        child: Consumer<NoteListViewModel>(builder: (context, vm, child) {
-          // Call loadNotes once the widget tree is fully built
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            vm.loadNotes(); // This ensures loadNotes() is called only once
-          });
+    return ChangeNotifierProvider(
+      create: (context) => NoteListViewModel(),
+      child: Consumer<NoteListViewModel>(builder: (context, vm, child) {
+        return Scaffold(
+            appBar: AppBar(
+              title: const Text('NoteApp'),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      vm.toggleOrderSection();
+                    },
+                    icon: const Icon(Icons.sort))
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                // implement navigation to add edit note screen
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddEditNoteScreen()));
+              },
+              child: const Icon(Icons.add),
+            ),
+            body: Buildbody(vm: vm));
+      }),
+    );
+  }
+}
 
-          if (vm.notes.isEmpty) {
-            return const Center(
-              child: Text('No notes available.'),
-            );
-          }
+class Buildbody extends StatelessWidget {
+  final NoteListViewModel vm;
 
-          return Padding(
+  const Buildbody({super.key, required this.vm});
+
+  @override
+  Widget build(BuildContext context) {
+    // Call loadNotes once the widget tree is fully built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      vm.loadNotes(); // This ensures loadNotes() is called only once
+    });
+
+    if (vm.notes.isEmpty) {
+      return const Center(
+        child: Text('No notes available.'),
+      );
+    }
+
+    return Column(
+      children: [
+        if (vm.isOrderSectionVisible)
+          OrderSection(
+            noteOrder: vm.order,
+            onOrderChange: (noteOrder) => vm.changeOrder(noteOrder),
+          ),
+        Expanded(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.builder(
                 itemCount: vm.notes.length,
@@ -62,9 +90,9 @@ class NoteListScreen extends StatelessWidget {
                     const SizedBox(height: 8)
                   ]);
                 }),
-          );
-        }),
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
