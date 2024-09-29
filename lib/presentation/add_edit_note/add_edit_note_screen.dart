@@ -37,7 +37,7 @@ class _bodybuilderState extends State<_bodybuilder> {
     super.initState();
     _titleController = TextEditingController(text: widget.vm.noteTitle);
     _contentController = TextEditingController(text: widget.vm.noteContent);
-    
+
     // Set up a listener to update the controllers
     widget.vm.addListener(() {
       _titleController.text = widget.vm.noteTitle;
@@ -62,67 +62,71 @@ class _bodybuilderState extends State<_bodybuilder> {
         },
         child: const Icon(Icons.save),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Color Picker Row
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: Note.noteColors.map((color) {
-                  int colorInt = color.value;
-                  return GestureDetector(
-                    onTap: () {
-                      widget.vm.colorChanged(colorInt);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                      width: 50.0,
-                      height: 50.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: color,
-                        border: Border.all(
-                          color: colorInt == widget.vm.noteColor
-                              ? Colors.black
-                              : Colors.transparent,
-                          width: 3.0,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              // Color Picker Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: Note.noteColors.map((color) {
+                    int colorInt = color.value;
+                    return GestureDetector(
+                      onTap: () {
+                        widget.vm.colorChanged(colorInt);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                        width: 50.0,
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: color,
+                          border: Border.all(
+                            color: colorInt == widget.vm.noteColor
+                                ? Colors.black
+                                : Colors.transparent,
+                            width: 3.0,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            const SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
-            // Title Input
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                hintText: "Enter note title",
-                border: InputBorder.none,
-              ),
-              style: Theme.of(context).textTheme.headlineSmall,
-              textInputAction: TextInputAction.next,
-            ),
-            const SizedBox(height: 16.0),
-
-            // Content Input
-            Expanded(
-              child: TextFormField(
-                controller: _contentController,
+              // Title Input
+              TextFormField(
+                controller: _titleController,
                 decoration: const InputDecoration(
-                  hintText: "Enter note content",
+                  hintText: "Enter note title",
                   border: InputBorder.none,
                 ),
-                maxLines: null,
-                expands: true,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.headlineSmall,
+                textInputAction: TextInputAction.next,
+                onChanged: (value) => widget.vm.titleChanged(value),
               ),
-            ),
-          ],
+              const SizedBox(height: 16.0),
+
+              // Content Input
+              Expanded(
+                child: TextFormField(
+                  controller: _contentController,
+                  decoration: const InputDecoration(
+                    hintText: "Enter note content",
+                    border: InputBorder.none,
+                  ),
+                  maxLines: null,
+                  expands: true,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  onChanged: (value) => widget.vm.contentChanged(value),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

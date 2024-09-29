@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
-
 import 'package:noteapp_flutter/domain/model/note.dart';
 
 class NoteCard extends StatelessWidget {
