@@ -33,31 +33,31 @@ class NoteRepositoryImpl implements NoteRepository {
   }
 
   List<Note> getSortedNote(List<Note> notes, NoteOrder noteOrder) {
-    if (noteOrder.orderType == OrderType.ascending) {
-      switch (noteOrder.runtimeType) {
-        case NoteOrderTitle _:
-          notes.sort((a, b) => a.title.compareTo(b.title));
-          break;
-        case NoteOrderDate _:
-          notes.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
-          break;
-        case NoteOrderColor _:
-          notes.sort((a, b) => a.color.compareTo(b.color));
-          break;
-      }
-    } else if (noteOrder.orderType == OrderType.descending) {
-      switch (noteOrder.runtimeType) {
-        case NoteOrderTitle _:
-          notes.sort((a, b) => b.title.compareTo(a.title));
-          break;
-        case NoteOrderDate _:
-          notes.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
-          break;
-        case NoteOrderColor _:
-          notes.sort((a, b) => b.color.compareTo(a.color));
-          break;
-      }
+  if (noteOrder.orderType == OrderType.ascending) {
+    if (noteOrder is NoteOrderTitle) {
+      notes.sort((a, b) => a.title.compareTo(b.title));
+      print("Sorted by Title Ascending: $notes");
+    } else if (noteOrder is NoteOrderDate) {
+      notes.sort((a, b) => a.timeStamp.compareTo(b.timeStamp));
+      print("Sorted by Date Ascending: $notes");
+    } else if (noteOrder is NoteOrderColor) {
+      notes.sort((a, b) => a.color.compareTo(b.color));
+      print("Sorted by Color Ascending: $notes");
     }
-    return notes;
+  } else if (noteOrder.orderType == OrderType.descending) {
+    if (noteOrder is NoteOrderTitle) {
+      notes.sort((a, b) => b.title.compareTo(a.title));
+      print("Sorted by Title Descending: $notes");
+    } else if (noteOrder is NoteOrderDate) {
+      notes.sort((a, b) => b.timeStamp.compareTo(a.timeStamp));
+      print("Sorted by Date Descending: $notes");
+    } else if (noteOrder is NoteOrderColor) {
+      notes.sort((a, b) => b.color.compareTo(a.color));
+      print("Sorted by Color Descending: $notes");
+    }
   }
+  
+  print("Sorted Notes Returned: $notes");
+  return notes;
+}
 }

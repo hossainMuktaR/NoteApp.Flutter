@@ -13,6 +13,10 @@ class NoteListViewModel extends ChangeNotifier {
   bool isOrderSectionVisible = false;
   NoteOrder order = NoteOrderTitle(OrderType.ascending);
 
+  NoteListViewModel() {
+    loadNotes();
+  }
+
   void toggleOrderSection() {
     isOrderSectionVisible = !isOrderSectionVisible;
     notifyListeners();

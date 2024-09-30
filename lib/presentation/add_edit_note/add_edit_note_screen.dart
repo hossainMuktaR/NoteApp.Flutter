@@ -58,7 +58,7 @@ class _bodybuilderState extends State<_bodybuilder> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           widget.vm.saveNote();
-          Navigator.pop(context);
+          Navigator.pop(context, true);
         },
         child: const Icon(Icons.save),
       ),

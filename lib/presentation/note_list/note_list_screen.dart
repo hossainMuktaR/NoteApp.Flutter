@@ -25,12 +25,15 @@ class NoteListScreen extends StatelessWidget {
               ],
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 // implement navigation to add edit note screen
-                Navigator.push(
+                final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AddEditNoteScreen()));
+                if (result == true) {
+                  vm.loadNotes();
+                }
               },
               child: const Icon(Icons.add),
             ),
@@ -43,15 +46,10 @@ class NoteListScreen extends StatelessWidget {
 class Buildbody extends StatelessWidget {
   final NoteListViewModel vm;
 
-  const Buildbody({super.key, required this.vm});
+  Buildbody({super.key, required this.vm});
 
   @override
   Widget build(BuildContext context) {
-    // Call loadNotes once the widget tree is fully built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      vm.loadNotes(); // This ensures loadNotes() is called only once
-    });
-
     if (vm.notes.isEmpty) {
       return const Center(
         child: Text('No notes available.'),
@@ -78,13 +76,16 @@ class Buildbody extends StatelessWidget {
                       onDeleteClick: () {
                         vm.deleteNoteById(note.id);
                       },
-                      onClickItem: () {
-                        Navigator.push(
+                      onClickItem: () async {
+                        final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
                                   AddEditNoteScreen(noteId: note.id),
                             ));
+                        if (result == true) {
+                          vm.loadNotes();
+                        }
                       },
                     ),
                     const SizedBox(height: 8)
