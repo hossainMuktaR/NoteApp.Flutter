@@ -22,7 +22,7 @@
 
 ## 4. Screenshots
 
-| Screenshot 1 | Screenshot 2 |
+| Note List Screen | Add Note Screen |
 | ------------ | ------------ |
 | ![note list](docs/note-list-screen.png) | ![add edit note](docs/add-note-screen.png) |
 
